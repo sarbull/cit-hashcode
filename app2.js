@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs-extra');
+const Calculate = require('./src/calculate');
 const _ = require('lodash');
 const InputReader = require('./src/input-reader');
 
@@ -80,4 +81,6 @@ function onEndCallback() {
 
     console.log('========= INPUT REQUESTS =========');
     console.log(dataSet.requests);
+
+    new Calculate(dataSet);
 }
