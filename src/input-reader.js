@@ -9,10 +9,11 @@ const fs = require('fs-extra'),
     _ = require('lodash');
 
 class InputReader {
-  constructor(filePath) {
+  constructor(filePath, onEndCallback) {
     this.reader = fs.createReadStream(filePath).pipe(iconv.decodeStream('utf8'));
     this.parseOptions = {delimiter: '\n'};
     this.lineNumber = 0;
+    this.onEndCallback = onEndCallback;
   }
 
   read(callback) {
@@ -28,9 +29,7 @@ class InputReader {
       .on('error', (error) => {
           console.log('Error while reading file.', error);
       })
-      .on('end', () => {
-        console.log('Read entirefile.')
-      }));
+      .on('end', this.onEndCallback));
   }
 
   continue () {
