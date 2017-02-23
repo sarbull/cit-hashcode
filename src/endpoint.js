@@ -1,14 +1,8 @@
-function Endpoint() {
-  var self = this;
-
-  self.create = function(index) {
-    return {
-      index: index,
-      latencyDataCenter: 2
-    };
-  };
-
-  return self;
+function createEndpoint(index, latency) {
+  return {
+    index: index,
+    latencyDataCenter: 2
+  }
 }
 
-module.exports = Endpoint;
+module.exports = createEndpoint;

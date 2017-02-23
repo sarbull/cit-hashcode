@@ -1,21 +1,38 @@
 var fs = require('fs');
 var dataCenterFactory = require('./src/dataCenter');
-var videoFactory = require('./src/video');
-// var endpointFactory = require('./src/endpoint');
+var createVideo = require('./src/video');
+var createEndpoint = require('./src/endpoint');
 
 function main(data) {
+  // Create data center
   var dataCenter = dataCenterFactory('data center 1');
-  var video = videoFactory();
-  // var endpoint = endpointFactory();
+  var endpoints = [];
+  var cacheServers = [];
 
-  var firstLine = data.split('\n')[0].split(' '); // array of first line strings
-  var secondLine = data.split('\n')[1].split(' '); // array of second line strings
+  var fileContents = data.split('\n');
 
+  var firstLine = fileContents[0].split(' '); // array of first line strings
+  var secondLine = fileContents[1].split(' '); // array of second line strings
+  var thirdLine = fileContents[2].split(' '); // array of second line strings
+
+  // Push videos to data center
   for(var i = 0; i < firstLine[0]; i++){
-    dataCenter.addVideo(video.create(i, secondLine[i]));
+    dataCenter.addVideo(createVideo(i, secondLine[i]));
   }
 
+  // Generate endpoints
+  for(var j = 0; j < firstLine[1]; j++) {
+    endpoints.push(createEndpoint(j));
+  }
+
+  // Generate Cache Server
+
+
+
+
   console.log(dataCenter.videos);
+  console.log(endpoints);
+
 }
 
 

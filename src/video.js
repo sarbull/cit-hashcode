@@ -1,14 +1,8 @@
-function Video() {
-  var self = this;
-
-  self.create = function(index, size) {
-    return {
-      index: index,
-      size: size
-    };
-  };
-
-  return self;
+function createVideo(index, size) {
+  return {
+    index: index,
+    size: size
+  }
 }
 
-module.exports = Video;
+module.exports = createVideo;
