@@ -1,5 +1,26 @@
 var fs = require('fs');
 
+var dataCenter = new createDataCenter();
+
+
+/*
+  Data center management
+*/
+function createDataCenter() {
+  return {
+    name: 'mainDatacenter',
+    videos: []
+  }
+}
+
+function addVideoInDatacenter(datacenter, video) {
+  this.datacenter.push(video);
+}
+
+function createVideo() {
+
+}
+
 var dataCenter = [
   {
     index: 0,
