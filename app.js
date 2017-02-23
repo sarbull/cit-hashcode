@@ -3,12 +3,14 @@ var dataCenterFactory = require('./src/dataCenter');
 var createVideo = require('./src/video');
 var createEndpoint = require('./src/endpoint');
 var createCacheServer = require('./src/createCacheServer');
+var createEndpointCacheServers = require('./src/createEndpointCacheServers');
 
 function main(data) {
   // Create data center
   var dataCenter = dataCenterFactory('data center 1');
   var endpoints = [];
   var cacheServers = [];
+  var endpointCacheServers = [];
 
   var fileContents = data.split('\n');
 
@@ -31,14 +33,46 @@ function main(data) {
     cacheServers.push(createCacheServer(k, firstLine[4]));
   }
 
-  console.log('Datacenter');
-  console.log(dataCenter.videos);
 
-  console.log('Endpoints');
-  console.log(endpoints);
+  var totalEndpoints = firstLine[1];
+  var startEndpointLine = 2;
+  var index = 0;
 
-  console.log('Cache Servers');
-  console.log(cacheServers);
+  while(index < totalEndpoints) {
+
+    endpoints.forEach(function(e) {
+      e.latencyDataCenter = fileContents[startEndpointLine].split(' ')[0];
+      console.log(e.latencyDataCenter);
+
+      var latenciesEndpointsNumber = fileContents[startEndpointLine].split(' ')[1];
+
+      console.log('Latencies ', latenciesEndpointsNumber);
+      for (k = startEndpointLine + 1; k < startEndpointLine + latenciesEndpointsNumber; k++) {
+        console.log(k);
+        console.log(fileContents[startEndpointLine + k]);
+      }
+
+
+      // endpointCacheServers.push(createEndpointCacheServers(e.index, c.index, fileContents[startEndpointLine].split(' ')[0]));
+    });
+
+    // console.log(fileContents[startEndpointLine].split(' ')[1]);
+
+    startEndpointLine = startEndpointLine + parseInt(fileContents[startEndpointLine].split(' ')[1]) + 1;
+
+    console.log(startEndpointLine);
+    index++;
+  }
+
+  //
+  // console.log('Datacenter');
+  // console.log(dataCenter.videos);
+  //
+  // console.log('Endpoints');
+  // console.log(endpoints);
+  //
+  // console.log('Cache Servers');
+  // console.log(cacheServers);
 
 }
 
