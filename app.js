@@ -33,35 +33,23 @@ function main(data) {
     cacheServers.push(createCacheServer(k, firstLine[4]));
   }
 
-
   var totalEndpoints = firstLine[1];
   var startEndpointLine = 2;
-  var index = 0;
+  var indexEndpoints = 0;
+  var endpoint;
 
-  while(index < totalEndpoints) {
-
-    endpoints.forEach(function(e) {
-      e.latencyDataCenter = fileContents[startEndpointLine].split(' ')[0];
-      console.log(e.latencyDataCenter);
+  while(indexEndpoints < totalEndpoints) {
+      endpoint = endpoints[indexEndpoints].latencyDataCenter = parseInt(fileContents[startEndpointLine].split(' ')[0]);
 
       var latenciesEndpointsNumber = fileContents[startEndpointLine].split(' ')[1];
 
-      console.log('Latencies ', latenciesEndpointsNumber);
-      for (k = startEndpointLine + 1; k < startEndpointLine + latenciesEndpointsNumber; k++) {
-        console.log(k);
-        console.log(fileContents[startEndpointLine + k]);
+      for (k = 0; k < latenciesEndpointsNumber; k++) {
+        let tempLine = fileContents[startEndpointLine + k + 1].split(' ');
+        endpointCacheServers.push(createEndpointCacheServers(endpoint[indexEndpoints], tempLine[0], tempLine[1]));
       }
 
-
-      // endpointCacheServers.push(createEndpointCacheServers(e.index, c.index, fileContents[startEndpointLine].split(' ')[0]));
-    });
-
-    // console.log(fileContents[startEndpointLine].split(' ')[1]);
-
-    startEndpointLine = startEndpointLine + parseInt(fileContents[startEndpointLine].split(' ')[1]) + 1;
-
-    console.log(startEndpointLine);
-    index++;
+      startEndpointLine = startEndpointLine + parseInt(fileContents[startEndpointLine].split(' ')[1]) + 1;
+      indexEndpoints++;
   }
 
   //
@@ -70,15 +58,12 @@ function main(data) {
   //
   // console.log('Endpoints');
   // console.log(endpoints);
+  // console.log(endpointCacheServers);
   //
   // console.log('Cache Servers');
-  // console.log(cacheServers);
+  console.log(endpointCacheServers);
 
 }
-
-
-
-
 
 fs.readFile( __dirname + '/input/example.in', function (err, data) {
   if (err) {
