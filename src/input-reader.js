@@ -5,24 +5,23 @@ const fs = require('fs-extra'),
     stream = require('stream'),
     es = require('event-stream'),
     parse = require("csv-parse"),
-    iconv = require('iconv-lite');
+    iconv = require('iconv-lite'),
+    _ = require('lodash');
 
 class InputReader {
   constructor(filePath) {
     this.reader = fs.createReadStream(filePath).pipe(iconv.decodeStream('utf8'));
     this.parseOptions = {delimiter: '\n'};
     this.lineNumber = 0;
-    this.data = [];
   }
 
   read(callback) {
     this.reader
       .pipe(es.split())
       .pipe(es.mapSync(line => {
-        ++this.lineNumber;
 
         parse(line, this.parseOptions, (err, [[line]]) => {
-          callback(line.split(' '));
+          callback(line.split(' '), this.lineNumber);
         });
 
       })
@@ -35,18 +34,9 @@ class InputReader {
   }
 
   continue () {
-    this.data = [];
+    this.lineNumber++;
     this.reader.resume();
   }
 }
 
 module.exports = InputReader;
-
-// USAGE in app.js
-// reader.read(parseReaderData);
-
-// function parseReaderData(line) {
-//   console.log(line);
-
-//   reader.continue();
-// }
