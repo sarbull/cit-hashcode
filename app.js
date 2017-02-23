@@ -2,6 +2,7 @@ var fs = require('fs');
 var dataCenterFactory = require('./src/dataCenter');
 var createVideo = require('./src/video');
 var createEndpoint = require('./src/endpoint');
+var createCacheServer = require('./src/createCacheServer');
 
 function main(data) {
   // Create data center
@@ -26,12 +27,18 @@ function main(data) {
   }
 
   // Generate Cache Server
+  for(var k = 0; k < firstLine[3]; k++) {
+    cacheServers.push(createCacheServer(k, firstLine[4]));
+  }
 
-
-
-
+  console.log('Datacenter');
   console.log(dataCenter.videos);
+
+  console.log('Endpoints');
   console.log(endpoints);
+
+  console.log('Cache Servers');
+  console.log(cacheServers);
 
 }
 
